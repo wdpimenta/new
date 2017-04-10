@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+		<propertyPlaceholder id="placeholder" location="classpath:sql.properties"/>
+		<route id="envioEmail">
+			<from uri="quartz://email?cron=0/5+*+*+*+*+*&stateful=true" />
+			<to uri="bean:executor?method=executeScript('/buscaPendenica.js')"/>	
+			<to uri="bean:executor?method=executeScript('/processa.js')"/>           
+		</route>
+	</camelContext>
+
+</beans>
